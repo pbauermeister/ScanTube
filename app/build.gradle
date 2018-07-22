@@ -51,4 +51,11 @@ dependencies {
 
     // Retrofit logging
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+
+    // camera
+    repositories { maven { url 'https://jitpack.io' } }
+    implementation 'io.fotoapparat.fotoapparat:library:2.3.1'
+
+    // Async
+    implementation "org.jetbrains.anko:anko-commons:0.10.4"
 }
