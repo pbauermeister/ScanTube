@@ -3,6 +3,7 @@ package digital.bauermeister.scantube
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
@@ -20,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         camera = Camera(this, main_cameraView, PERMISSION_REQUEST_CODE_CAMERA)
 
         main_button.setOnClickListener {
-            Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show()
             camera?.takePicture({ bitmap -> handleBitmap(bitmap) })
         }
     }
@@ -43,7 +43,14 @@ class MainActivity : AppCompatActivity() {
     fun handleBitmap(bitmap: Bitmap) {
         val activity = this
         doAsync {
-            processBitmap(activity, bitmap)
+            processBitmap(activity, bitmap, { message -> logger(message) })
+        }
+    }
+
+    fun logger(message: String) {
+        Log.i(this.javaClass.name, message)
+        runOnUiThread {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
 }

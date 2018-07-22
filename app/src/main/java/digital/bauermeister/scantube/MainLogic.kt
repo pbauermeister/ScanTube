@@ -9,18 +9,18 @@ import android.util.Log
 import digital.bauermeister.scantube.googlevision.GoogleVision
 import digital.bauermeister.scantube.youtube.YouTube
 
-fun queryImageAndStartYouTube(context: Context, imageBase64: String) {
+fun queryImageAndStartYouTube(context: Context, imageBase64: String, logger: (String) -> Unit) {
     val label = GoogleVision.getAnnotateWebDetectionFirstLabel(imageBase64)
-    Log.i("MainLogic", "*** label: " + label)
+    logger("Found label: " + label)
     if (label == null) return
 
     val playlistId = YouTube.getSearchPlaylistFirstId(label + " and full album")
-    Log.i("MainLogic", "*** playlistId: " + playlistId)
+    logger(if (playlistId == null) "No playlist found" else "Playlist found")
     if (playlistId == null) return
     // TODO: playlist failed: search for just label, w/o full album
 
     val videoId = YouTube.getPlaylistItemsFirstVideoId(playlistId)
-    Log.i("MainLogic", "*** videoId: " + videoId)
+    logger(if (playlistId == null) "No video found" else "First video of playlist found")
     if (videoId == null) return
     // TODO: video of playlist failed: search for video with label, no playlist
 
@@ -34,7 +34,9 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String) {
 
 var TheBitmap: Bitmap? = null
 
-fun processBitmap(activity: Activity, bitmap: Bitmap) {
+fun processBitmap(activity: Activity, bitmap: Bitmap, logger: (String) -> Unit) {
+    logger("Image captured")
+
     val newBitmap = sizeBitmap(bitmap)
     val imageBase64 = encodeBitmapTobase64(newBitmap)
 
@@ -44,7 +46,7 @@ fun processBitmap(activity: Activity, bitmap: Bitmap) {
         val intent = Intent(activity, ImageActivity::class.java)
         activity.startActivity(intent)
     } else {
-        queryImageAndStartYouTube(activity, imageBase64)
+        queryImageAndStartYouTube(activity, imageBase64, logger)
         bitmap.recycle()
         newBitmap.recycle()
     }
