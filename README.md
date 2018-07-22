@@ -20,6 +20,19 @@ boombox a CD case you own, or photo. This makes a combination of the
 old ages in which you had to own your music, and the new all-digital
 age.
 
+## Status
+
+Very basic working proof of concept.
+
+1. Build the app (to add your app keys, see README_KEY.md [README_KEY.md](README_KEY.md))
+2. Run the app. The camera starts.
+3. Show a CD coverto the camera, avoid reflexions, and press the button
+4. Wait for recognition. If it works, YouTube gets called on the found playlist
+
+## TODO
+
+See [TODO.md](TODO.md).
+
 -----
 (*) If you're into Kotlin too, we're friends.
 
