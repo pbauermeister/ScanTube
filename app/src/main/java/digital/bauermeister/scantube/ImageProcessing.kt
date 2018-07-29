@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.util.Base64
 import java.io.ByteArrayOutputStream
+import kotlin.math.min
 
 
 const val IMAGE_SIZE = 1600
@@ -20,10 +21,14 @@ fun sizeBitmap(source: Bitmap, rotation: Int): Bitmap {
     val w = source.getWidth()
     val h = source.getHeight()
 
+    val margin = min(w, h) / 8
+    val land = w >= h
+    val posX = if (land) w / 2 - h / 2 + margin else margin
+    val posY = if (land) margin else h / 2 - w / 2 + margin
+    val size = if (land) h - margin * 2 else w - margin * 2
+
     // crop
-    val squared =
-            if (w >= h) Bitmap.createBitmap(source, w / 2 - h / 2, 0, h, h)
-            else Bitmap.createBitmap(source, 0, h / 2 - w / 2, w, w)
+    val squared = Bitmap.createBitmap(source, posX, posY, size, size)
     source.recycle()
 
     // resize
