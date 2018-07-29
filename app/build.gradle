@@ -58,4 +58,8 @@ dependencies {
 
     // Async
     implementation "org.jetbrains.anko:anko-commons:0.10.4"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.22.5"
 }
