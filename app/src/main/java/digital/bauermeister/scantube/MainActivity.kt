@@ -38,6 +38,22 @@ class MainActivity : AppCompatActivity() {
         setState(State.READY)
     }
 
+    fun hideNavigation() {
+        val decorView = window.decorView
+        val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        decorView.systemUiVisibility = uiOptions
+    }
+
+    override fun onResume() {
+        super.onResume()
+        hideNavigation()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        hideNavigation()
+    }
+
     override fun onStart() {
         super.onStart()
         camera?.start()

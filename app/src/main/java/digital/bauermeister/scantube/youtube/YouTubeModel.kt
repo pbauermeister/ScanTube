@@ -11,3 +11,9 @@ object YouTubePlaylistItemsResponse {
     data class Item(val contentDetails: ContentDetails)
     data class ContentDetails(val videoId: String)
 }
+
+object YouTubeVideoItemsResponse {
+    data class Data(val items: Array<Item>)
+    data class Item(val id: Id)
+    data class Id(val videoId: String)
+}

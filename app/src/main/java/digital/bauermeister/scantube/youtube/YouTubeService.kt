@@ -1,5 +1,6 @@
 package digital.bauermeister.scantube.youtube
 
+import android.util.Log
 import digital.bauermeister.scantube.BuildConfig
 import digital.bauermeister.scantube.Callbacks
 import digital.bauermeister.scantube.makeWebServiceClient
@@ -13,12 +14,20 @@ const val APP_KEY = BuildConfig.SCANTUBE_GOOGLEAPIS_YOUTUBE_APPKEY;
 
 interface YouTubeService {
     @GET("search")
-    fun search(
+    fun searchPlaylist(
             @Query("q") q: String,
             @Query("type") type: String = "playlist",
             @Query("part") part: String = "id",
             @Query("key") key: String = APP_KEY)
             : Observable<YouTubeSearchPlaylistResponse.Data>
+
+    @GET("search")
+    fun searchVideo(
+            @Query("q") q: String,
+            @Query("type") type: String = "video",
+            @Query("part") part: String = "id",
+            @Query("key") key: String = APP_KEY)
+            : Observable<YouTubeVideoItemsResponse.Data>
 
     @GET("playlistItems")
     fun getPlaylistItems(
@@ -46,7 +55,7 @@ object YouTube {
     fun searchPlayList(q: String,
                        onSuccess: (YouTubeSearchPlaylistResponse.Data) -> Unit,
                        onError: (Throwable) -> Unit) {
-        youTubeServe.search(q)
+        youTubeServe.searchPlaylist(q)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onSuccess, onError)
@@ -82,6 +91,28 @@ object YouTube {
         getPlaylistItems(playlistId, callbacks.onSuccess, callbacks.onError)
         callbacks.await()
         return callbacks.success?.items?.getOrNull(0)?.contentDetails?.videoId
+    }
+
+    /**
+     * Asynchronously search for video
+     */
+    fun searchVideo(q: String,
+                    onSuccess: (YouTubeVideoItemsResponse.Data) -> Unit,
+                    onError: (Throwable) -> Unit) {
+        youTubeServe.searchVideo(q)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onSuccess, onError)
+    }
+
+    /**
+     * Synchronously search for video, returning id of first match
+     */
+    fun getSearchVideoFirstId(q: String): String? {
+        val callbacks = Callbacks<YouTubeVideoItemsResponse.Data>()
+        searchVideo(q, callbacks.onSuccess, callbacks.onError)
+        callbacks.await()
+        return callbacks.success?.items?.getOrNull(0)?.id?.videoId
     }
 
 }

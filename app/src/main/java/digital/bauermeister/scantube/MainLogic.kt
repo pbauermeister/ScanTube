@@ -17,24 +17,46 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
     updateState(State.EVALUATING, null)
     if (label == null) return
 
-    val searchString = if (forAlbum) label + " and full album" else label + " and song"
-    val playlistId = YouTube.getSearchPlaylistFirstId(searchString)
-    logger(if (playlistId == null) "No playlist found" else "Playlist found")
-    if (playlistId == null) return
-    // TODO: playlist failed: search for just label, w/o full album
+    if(forAlbum) {
+        val searchString = label + " and full album"
+        val playlistId = YouTube.getSearchPlaylistFirstId(searchString)
+        logger(if (playlistId == null) "No playlist found" else "Playlist found")
+        if (playlistId == null) return
+        // TODO: playlist failed: search for just label, w/o full album
 
-    val videoId = YouTube.getPlaylistItemsFirstVideoId(playlistId)
-    logger(if (playlistId == null) "No video found" else "First video of playlist found")
-    if (videoId == null) return
-    // TODO: video of playlist failed: search for video with label, no playlist
+        val videoId = YouTube.getPlaylistItemsFirstVideoId(playlistId)
+        logger(if (playlistId == null) "No video found" else "First video of playlist found")
+        if (videoId == null) return
+        // TODO: video of playlist failed: search for video with label, no playlist
 
-    val url = "https://www.youtube.com/watch?v=$videoId&list=$playlistId"
-    Log.i("MainLogic", "*** url: " + url)
-    val i = Intent(Intent.ACTION_VIEW)
-    i.data = Uri.parse(url)
+        val url = "https://www.youtube.com/watch?v=$videoId&list=$playlistId"
+        Log.i("MainLogic", "*** url: " + url)
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
 
-    updateState(State.READY, null)
-    context.startActivity(i)
+        updateState(State.READY, null)
+        context.startActivity(i)
+    }
+
+    else {
+        val searchString = label + " and music"
+//        val url = "https://www.youtube.com/results?search_query=$searchString"
+//        Log.i("MainLogic", "*** url: " + url)
+//        val i = Intent(Intent.ACTION_VIEW)
+//        i.data = Uri.parse(url)
+
+        val videoId = YouTube.getSearchVideoFirstId(searchString)
+        logger(if (videoId == null) "No video found" else "Video found")
+        if (videoId == null) return
+
+        val url = "https://www.youtube.com/watch?v=$videoId"
+        Log.i("MainLogic", "*** url: " + url)
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+
+        updateState(State.READY, null)
+        context.startActivity(i)
+    }
 }
 
 fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,
