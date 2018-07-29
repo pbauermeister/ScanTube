@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // hideNavigation() // hiding the navigation would eat the next touch to reshow nav
 
         camera = Camera(this, main_cameraView, PERMISSION_REQUEST_CODE_CAMERA)
 
@@ -42,16 +43,6 @@ class MainActivity : AppCompatActivity() {
         val decorView = window.decorView
         val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN)
         decorView.systemUiVisibility = uiOptions
-    }
-
-    override fun onResume() {
-        super.onResume()
-        hideNavigation()
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        hideNavigation()
     }
 
     override fun onStart() {
@@ -88,12 +79,10 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread {
             when (state) {
                 State.SHOOTING -> {
+                    // avoid reflections on CD cover: black screen, no nav
                     main_blacklayer.visibility = VISIBLE
                     main_croppedImage.visibility = GONE
-
-                    val decorView = window.decorView
-                    val uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
-                    decorView.systemUiVisibility = uiOptions
+                    hideNavigation()
                 }
                 State.QUERYING -> {
                     main_blacklayer.visibility = VISIBLE
