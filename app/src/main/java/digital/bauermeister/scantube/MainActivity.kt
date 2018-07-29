@@ -45,13 +45,13 @@ class MainActivity : AppCompatActivity() {
         decorView.systemUiVisibility = uiOptions
     }
 
-    override fun onStart() {
-        super.onStart()
-        camera?.start()
+    override fun onResume() {
+        super.onResume()
+        camera?.start() // (re)start camera at resume, to account for device orientation changes
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         camera?.stop()
     }
 

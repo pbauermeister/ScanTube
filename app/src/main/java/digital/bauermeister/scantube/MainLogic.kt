@@ -17,7 +17,8 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
     updateState(State.EVALUATING, null)
     if (label == null) return
 
-    if(forAlbum) {
+    // Playlist
+    if (forAlbum) {
         val searchString = label + " and full album"
         val playlistId = YouTube.getSearchPlaylistFirstId(searchString)
         logger(if (playlistId == null) "No playlist found" else "Playlist found")
@@ -38,13 +39,9 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
         context.startActivity(i)
     }
 
+    // Video
     else {
         val searchString = label + " and music"
-//        val url = "https://www.youtube.com/results?search_query=$searchString"
-//        Log.i("MainLogic", "*** url: " + url)
-//        val i = Intent(Intent.ACTION_VIEW)
-//        i.data = Uri.parse(url)
-
         val videoId = YouTube.getSearchVideoFirstId(searchString)
         logger(if (videoId == null) "No video found" else "Video found")
         if (videoId == null) return
