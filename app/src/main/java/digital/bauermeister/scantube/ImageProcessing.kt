@@ -1,8 +1,10 @@
 package digital.bauermeister.scantube
 
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.util.Base64
 import java.io.ByteArrayOutputStream
+
 
 const val IMAGE_SIZE = 1600
 
@@ -14,7 +16,7 @@ fun encodeBitmapTobase64(image: Bitmap): String {
     return Base64.encodeToString(bytes, Base64.DEFAULT)
 }
 
-fun sizeBitmap(source: Bitmap): Bitmap {
+fun sizeBitmap(source: Bitmap, rotation: Int): Bitmap {
     val w = source.getWidth()
     val h = source.getHeight()
 
@@ -28,7 +30,13 @@ fun sizeBitmap(source: Bitmap): Bitmap {
     val sized = Bitmap.createScaledBitmap(squared, IMAGE_SIZE, IMAGE_SIZE, false)
     squared.recycle()
 
+    // rotate
+    val matrix = Matrix()
+    matrix.postRotate(rotation.toFloat())
+    val rotated = Bitmap.createBitmap(sized, 0, 0, sized.width, sized.height, matrix, true)
+    sized.recycle()
+
     // TODO: first resize, then crop
 
-    return sized
+    return rotated
 }

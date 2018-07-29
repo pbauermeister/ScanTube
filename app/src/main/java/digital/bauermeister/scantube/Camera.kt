@@ -3,7 +3,6 @@ package digital.bauermeister.scantube
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
@@ -11,6 +10,7 @@ import io.fotoapparat.Fotoapparat
 import io.fotoapparat.log.logcat
 import io.fotoapparat.log.loggers
 import io.fotoapparat.parameter.ScaleType
+import io.fotoapparat.result.BitmapPhoto
 import io.fotoapparat.selector.front
 import io.fotoapparat.view.CameraRenderer
 
@@ -52,17 +52,17 @@ class Camera(val activity: Activity,
         } else {
             // Permission has already been granted
             Log.d(this.javaClass.name, "CAMERA: perm already granted")
-            fotoapparat?.start()
+            fotoapparat.start()
         }
     }
 
-    fun takePicture(callback: (Bitmap) -> Unit) {
+    fun takePicture(callback: (BitmapPhoto?) -> Unit) {
         val photoResult = fotoapparat.takePicture()
 
         // Asynchronously converts photo to bitmap and returns the result on the main thread
         photoResult
                 .toBitmap()
-                .whenAvailable { bitmapPhoto -> callback(bitmapPhoto!!.bitmap) }
+                .whenAvailable { callback(it) }
     }
 
     fun onRequestPermissionsResult(requestCode: Int,
@@ -75,7 +75,7 @@ class Camera(val activity: Activity,
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     Log.d(this.javaClass.name, "CAMERA: perm newly granted")
-                    fotoapparat?.start()
+                    fotoapparat.start()
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.

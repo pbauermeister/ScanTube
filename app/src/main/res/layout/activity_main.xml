@@ -5,23 +5,71 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-
-        <io.fotoapparat.view.CameraView
-            android:id="@+id/main_cameraView"
+        <!-- Camera -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/main_button"
+            <io.fotoapparat.view.CameraView
+                android:id="@+id/main_cameraView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/main_album_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Album" />
+
+                <Button
+                    android:id="@+id/main_song_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Song" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Black screen -->
+        <LinearLayout
+            android:id="@+id/main_blacklayer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Click me" />
+            android:layout_height="match_parent"
+            android:background="#000000"
+            android:orientation="vertical"
+            android:visibility="invisible" />
 
-    </LinearLayout>
+        <!-- Preview -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/main_croppedImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>

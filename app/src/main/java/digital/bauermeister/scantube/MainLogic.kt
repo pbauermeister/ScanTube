@@ -8,13 +8,17 @@ import android.net.Uri
 import android.util.Log
 import digital.bauermeister.scantube.googlevision.GoogleVision
 import digital.bauermeister.scantube.youtube.YouTube
+import io.fotoapparat.result.BitmapPhoto
 
-fun queryImageAndStartYouTube(context: Context, imageBase64: String, logger: (String) -> Unit) {
+fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: Boolean,
+                              logger: (String) -> Unit, updateState: (State, Bitmap?) -> Unit) {
     val label = GoogleVision.getAnnotateWebDetectionFirstLabel(imageBase64)
     logger("Found label: " + label)
+    updateState(State.EVALUATING, null)
     if (label == null) return
 
-    val playlistId = YouTube.getSearchPlaylistFirstId(label + " and full album")
+    val searchString = if (forAlbum) label + " and full album" else label + " and song"
+    val playlistId = YouTube.getSearchPlaylistFirstId(searchString)
     logger(if (playlistId == null) "No playlist found" else "Playlist found")
     if (playlistId == null) return
     // TODO: playlist failed: search for just label, w/o full album
@@ -29,25 +33,19 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, logger: (St
     val i = Intent(Intent.ACTION_VIEW)
     i.data = Uri.parse(url)
 
+    updateState(State.READY, null)
     context.startActivity(i)
 }
 
-var TheBitmap: Bitmap? = null
-
-fun processBitmap(activity: Activity, bitmap: Bitmap, logger: (String) -> Unit) {
+fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,
+                  logger: (String) -> Unit, updateState: (State, Bitmap?) -> Unit) {
     logger("Image captured")
 
-    val newBitmap = sizeBitmap(bitmap)
+    val newBitmap = sizeBitmap(bitmapPhoto.bitmap, -bitmapPhoto.rotationDegrees)
     val imageBase64 = encodeBitmapTobase64(newBitmap)
 
-    if (false) {
-        // display to image activity
-        TheBitmap = newBitmap
-        val intent = Intent(activity, ImageActivity::class.java)
-        activity.startActivity(intent)
-    } else {
-        queryImageAndStartYouTube(activity, imageBase64, logger)
-        bitmap.recycle()
-        newBitmap.recycle()
-    }
+    updateState(State.QUERYING, newBitmap)
+    queryImageAndStartYouTube(activity, imageBase64, forAlbum, logger, updateState)
+    newBitmap.recycle()
+    bitmapPhoto.bitmap.recycle()
 }
