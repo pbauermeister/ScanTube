@@ -28,7 +28,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#a0000000" />
+                    android:background="@color/mask_dark" />
 
                 <digital.bauermeister.scantube.SquareView
                     android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#a0000000">
+                    android:background="@color/mask_dark">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -51,23 +51,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:background="#00ffffff"
-                            android:text="Album"
-                            android:textColor="#ffffff" />
+                            android:background="@color/transparent"
+                            android:text="@string/button_album"
+                            android:textColor="@color/button_font" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="#80ffffff" />
+                            android:background="@color/divider" />
 
                         <Button
                             android:id="@+id/main_song_button"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:background="#00ffffff"
-                            android:text="Song"
-                            android:textColor="#ffffff" />
+                            android:background="@color/transparent"
+                            android:text="@string/button_song"
+                            android:textColor="@color/button_font" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -81,7 +81,7 @@
             android:id="@+id/main_blacklayer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#000000"
+            android:background="@color/black_screen"
             android:orientation="vertical"
             android:visibility="invisible" />
 
