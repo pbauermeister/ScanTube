@@ -3,4 +3,7 @@
 
     <string name="button_album">Album</string>
     <string name="button_song">Song</string>
+
+    <string name="shooting">Shooting picture, please don\'t move!</string>
+
 </resources>

@@ -6,6 +6,7 @@
     tools:context=".MainActivity">
 
     <FrameLayout
+        android:background="@color/black_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -41,6 +42,7 @@
                     android:background="@color/mask_dark">
 
                     <LinearLayout
+                        android:id="@+id/main_buttons"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
@@ -82,8 +84,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/black_screen"
+            android:gravity="center"
             android:orientation="vertical"
-            android:visibility="invisible" />
+            android:visibility="invisible">
+
+            <digital.bauermeister.scantube.SquareView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/shooting"
+                    android:textColor="@color/shooting_text"
+                    android:textSize="32dp" />
+            </digital.bauermeister.scantube.SquareView>
+        </LinearLayout>
 
         <!-- Preview -->
         <LinearLayout
@@ -94,7 +112,8 @@
             <ImageView
                 android:id="@+id/main_croppedImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
                 android:visibility="invisible" />
 
             <View

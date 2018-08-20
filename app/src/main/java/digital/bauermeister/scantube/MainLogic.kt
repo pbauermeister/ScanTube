@@ -19,7 +19,7 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
 
     // Playlist
     if (forAlbum) {
-        val searchString = label + " and full album"
+        val searchString = theConfig.albumSearchTemplate.format(label)
         val playlistId = YouTube.getSearchPlaylistFirstId(searchString)
         logger(if (playlistId == null) "No playlist found" else "Playlist found")
         if (playlistId == null) return
@@ -41,7 +41,7 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
 
     // Video
     else {
-        val searchString = label + " and music"
+        val searchString = theConfig.videoSearchTemplate.format(label)
         val videoId = YouTube.getSearchVideoFirstId(searchString)
         logger(if (videoId == null) "No video found" else "Video found")
         if (videoId == null) return
@@ -57,10 +57,11 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
 }
 
 fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,
+                  deviceRotation: Int,
                   logger: (String) -> Unit, updateState: (State, Bitmap?) -> Unit) {
     logger("Image captured")
 
-    val newBitmap = sizeBitmap(bitmapPhoto.bitmap, -bitmapPhoto.rotationDegrees)
+    val newBitmap = sizeBitmap(bitmapPhoto.bitmap, -bitmapPhoto.rotationDegrees, deviceRotation)
     val imageBase64 = encodeBitmapTobase64(newBitmap)
 
     updateState(State.QUERYING, newBitmap)

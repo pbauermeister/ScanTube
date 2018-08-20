@@ -7,12 +7,28 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
 import io.fotoapparat.Fotoapparat
+import io.fotoapparat.configuration.CameraConfiguration
 import io.fotoapparat.log.logcat
 import io.fotoapparat.log.loggers
 import io.fotoapparat.parameter.ScaleType
 import io.fotoapparat.result.BitmapPhoto
+import io.fotoapparat.selector.back
 import io.fotoapparat.selector.front
+import io.fotoapparat.selector.highestResolution
+import io.fotoapparat.selector.lowestResolution
 import io.fotoapparat.view.CameraRenderer
+
+val lensPosition = when (theConfig.whichCamera) {
+    WhichCamera.FRONT -> front()
+    WhichCamera.BACK -> back()
+    else -> front()
+}
+
+val cameraConfiguration = when (theConfig.cameraResolution) {
+    CameraResolution.MAXIMUM -> CameraConfiguration(pictureResolution = highestResolution())
+    CameraResolution.MINIMUM -> CameraConfiguration(pictureResolution = lowestResolution())
+    else -> CameraConfiguration()
+}
 
 class Camera(val activity: Activity,
              val cameraView: CameraRenderer,
@@ -21,8 +37,8 @@ class Camera(val activity: Activity,
             context = activity,
             view = cameraView,
             scaleType = ScaleType.CenterCrop,
-            lensPosition = front(),
-            //cameraConfiguration = configuration,
+            lensPosition = lensPosition,
+            cameraConfiguration = cameraConfiguration,
             logger = loggers(logcat()),
             cameraErrorCallback = { error ->
                 Log.e(this.javaClass.name, "Camera error: " + error)
