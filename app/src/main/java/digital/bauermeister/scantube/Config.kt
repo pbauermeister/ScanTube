@@ -7,7 +7,10 @@ data class Config(
         // To look good on screen. For very low-mem devices, use MINIMUM
         val cameraResolution: CameraResolution = CameraResolution.MAXIMUM,
 
+        // Camera
         val whichCamera: WhichCamera = WhichCamera.FRONT,
+        val resetCameraBeforeShooting:Boolean = false,
+        val delayBeforeShooting: Int = 0,
 
         // BW friendly, with still enough resolution for recognition
         val maxPhotoResolution: Int = 800,
@@ -21,8 +24,6 @@ data class Config(
 
         // To let YouTube settle before we restart our camera
         val delayBeforeReadyAgain: Int = 1000 * 1
-
-        // val delayBeforeShooting: Int = 50,
 )
 
 val theConfig = Config()

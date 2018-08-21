@@ -13,7 +13,7 @@ import io.fotoapparat.result.BitmapPhoto
 fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: Boolean,
                               logger: (String) -> Unit, updateState: (State, Bitmap?) -> Unit) {
     val label = GoogleVision.getAnnotateWebDetectionFirstLabel(imageBase64)
-    logger("Found label: " + label)
+    logger(context.getString(R.string.toast_found_label_fmt).format(label))
     updateState(State.EVALUATING, null)
     if (label == null) return
 
@@ -21,13 +21,18 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
     if (forAlbum) {
         val searchString = theConfig.albumSearchTemplate.format(label)
         val playlistId = YouTube.getSearchPlaylistFirstId(searchString)
-        logger(if (playlistId == null) "No playlist found" else "Playlist found")
+        logger(context.getString(
+                if (playlistId == null) R.string.toast_no_playlist_found
+                else R.string.toast_playlist_found)
+        )
         if (playlistId == null) return
         // TODO: playlist failed: search for just label, w/o full album
 
         val videoId = YouTube.getPlaylistItemsFirstVideoId(playlistId)
-        logger(if (playlistId == null) "No video found" else "First video of playlist found")
-        if (videoId == null) return
+        logger(context.getString(
+                if (videoId == null) R.string.toast_no_video_found
+                else R.string.toast_video_found)
+        )
         // TODO: video of playlist failed: search for video with label, no playlist
 
         val url = "https://www.youtube.com/watch?v=$videoId&list=$playlistId"
@@ -43,7 +48,10 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
     else {
         val searchString = theConfig.videoSearchTemplate.format(label)
         val videoId = YouTube.getSearchVideoFirstId(searchString)
-        logger(if (videoId == null) "No video found" else "Video found")
+        logger(context.getString(
+                if (videoId == null) R.string.toast_no_video_found
+                else R.string.toast_video_found)
+        )
         if (videoId == null) return
 
         val url = "https://www.youtube.com/watch?v=$videoId"
@@ -59,7 +67,7 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
 fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,
                   deviceRotation: Int,
                   logger: (String) -> Unit, updateState: (State, Bitmap?) -> Unit) {
-    logger("Image captured")
+    logger(activity.getString(R.string.toast_image_captured))
 
     val newBitmap = sizeBitmap(bitmapPhoto.bitmap, -bitmapPhoto.rotationDegrees, deviceRotation)
     val imageBase64 = encodeBitmapTobase64(newBitmap)

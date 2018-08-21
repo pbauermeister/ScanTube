@@ -3,7 +3,15 @@
 
     <string name="button_album">Album</string>
     <string name="button_song">Song</string>
+    <string name="label_shooting">Shooting picture, please don\'t move!</string>
 
-    <string name="shooting">Shooting picture, please don\'t move!</string>
+    <string name="toast_taking_picture">Taking picture</string>
+    <string name="toast_image_captured">Image captured</string>
 
+    <string name="toast_found_label_fmt">Found label: %s</string>
+
+    <string name="toast_no_playlist_found">No playlist found</string>
+    <string name="toast_playlist_found">Playlist found</string>
+    <string name="toast_no_video_found">No video found</string>
+    <string name="toast_video_found">Video found</string>
 </resources>

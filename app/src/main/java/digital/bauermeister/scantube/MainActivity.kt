@@ -121,19 +121,22 @@ class MainActivity : Activity() {
     fun takeAndProcessPicture(forAlbum: Boolean) = async {
         setState(State.SHOOTING)
 
-        // reset camera before shooting
-        camera?.stop()
-        camera?.start()
+        if (theConfig.resetCameraBeforeShooting) {
+            camera?.stop()
+            camera?.start()
+        }
 
-        //runBlocking { delay(theConfig.delayBeforeShooting) }
+        if (theConfig.delayBeforeShooting > 0)
+            runBlocking { delay(theConfig.delayBeforeShooting) }
 
-        var tmp: BitmapPhoto? = null
+        var capture: BitmapPhoto? = null
         async {
-            tmp = suspendCoroutine {
+            capture = suspendCoroutine {
+                logger(getString(R.string.toast_taking_picture))
                 camera?.takePicture({ bp -> it.resume(bp) })
             }
         }.await()
-        val bitmapPhoto = tmp
+        val bitmapPhoto = capture
 
         if (bitmapPhoto != null)
             handleBitmap(bitmapPhoto, forAlbum)
