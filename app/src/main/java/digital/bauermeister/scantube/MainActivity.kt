@@ -65,11 +65,27 @@ class MainActivity : Activity() {
         camera?.stop()
     }
 
-    fun logger(message: String) {
-        Log.i(this.javaClass.name, message)
+    fun message(message: String?, steady: Boolean) {
+        if (message != null)
+            Log.i(this.javaClass.name, message)
         runOnUiThread {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            if (steady) {
+                if (message == null) {
+                    main_message.text = null
+                    main_message.visibility = View.GONE
+                } else {
+                    main_message.text = message
+                    main_message.visibility = View.VISIBLE
+                }
+            } else if (message != null) {
+                main_message.visibility = View.GONE
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
         }
+    }
+
+    fun clearMessage() {
+        main_message.visibility = View.GONE
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -82,7 +98,8 @@ class MainActivity : Activity() {
         doAsync {
             processBitmap(activity, bitmapPhoto, forAlbum,
                     getScreenOrientation(),
-                    { logger(it) }, { state, bitmap -> setState(state, bitmap) })
+                    { str, long -> message(str, long) },
+                    { state, bitmap -> setState(state, bitmap) })
         }
     }
 
@@ -99,7 +116,15 @@ class MainActivity : Activity() {
                 }
                 State.READY -> {
                     runBlocking { delay(theConfig.delayBeforeReadyAgain) }
+                    clearMessage()
 
+                    main_blacklayer.visibility = INVISIBLE
+                    main_croppedImage.visibility = GONE
+                    main_buttons.visibility = VISIBLE
+                    main_cameraView.visibility = VISIBLE
+                    camera?.start()
+                }
+                State.ERROR -> {
                     main_blacklayer.visibility = INVISIBLE
                     main_croppedImage.visibility = GONE
                     main_buttons.visibility = VISIBLE
@@ -132,7 +157,7 @@ class MainActivity : Activity() {
         var capture: BitmapPhoto? = null
         async {
             capture = suspendCoroutine {
-                logger(getString(R.string.toast_taking_picture))
+                message(getString(R.string.toast_taking_picture), false)
                 camera?.takePicture({ bp -> it.resume(bp) })
             }
         }.await()

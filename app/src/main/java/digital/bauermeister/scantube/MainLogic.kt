@@ -11,30 +11,35 @@ import digital.bauermeister.scantube.youtube.YouTube
 import io.fotoapparat.result.BitmapPhoto
 
 fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: Boolean,
-                              logger: (String) -> Unit, updateState: (State, Bitmap?) -> Unit) {
+                              message: (String?, Boolean) -> Unit, updateState: (State, Bitmap?) -> Unit) {
+    message(context.getString(R.string.message_query_google), true)
     val label = GoogleVision.getAnnotateWebDetectionFirstLabel(imageBase64)
-    logger(context.getString(R.string.toast_found_label_fmt).format(label))
+    message(context.getString(R.string.toast_found_label_fmt).format(label), false)
     updateState(State.EVALUATING, null)
     if (label == null) return
 
     // Playlist
     if (forAlbum) {
         val searchString = theConfig.albumSearchTemplate.format(label)
+        message(context.getString(R.string.message_query_youtube_pl), true)
         val playlistId = YouTube.getSearchPlaylistFirstId(searchString)
-        logger(context.getString(
+        message(context.getString(
                 if (playlistId == null) R.string.toast_no_playlist_found
-                else R.string.toast_playlist_found)
-        )
+                else R.string.toast_playlist_found),
+                false)
         if (playlistId == null) return
         // TODO: playlist failed: search for just label, w/o full album
 
+        message("Querying Youtube for playlist items", true)
+        message(context.getString(R.string.message_query_youtube_pl_info), true)
         val videoId = YouTube.getPlaylistItemsFirstVideoId(playlistId)
-        logger(context.getString(
-                if (videoId == null) R.string.toast_no_video_found
-                else R.string.toast_video_found)
-        )
+        message(context.getString(
+                if (videoId == null) R.string.toast_first_video_not_found
+                else R.string.toast_first_video_found),
+                false)
         // TODO: video of playlist failed: search for video with label, no playlist
 
+        message(null, true)
         val url = "https://www.youtube.com/watch?v=$videoId&list=$playlistId"
         Log.i("MainLogic", "*** url: " + url)
         val i = Intent(Intent.ACTION_VIEW)
@@ -48,10 +53,10 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
     else {
         val searchString = theConfig.videoSearchTemplate.format(label)
         val videoId = YouTube.getSearchVideoFirstId(searchString)
-        logger(context.getString(
+        message(context.getString(
                 if (videoId == null) R.string.toast_no_video_found
-                else R.string.toast_video_found)
-        )
+                else R.string.toast_video_found),
+                false)
         if (videoId == null) return
 
         val url = "https://www.youtube.com/watch?v=$videoId"
@@ -66,14 +71,21 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
 
 fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,
                   deviceRotation: Int,
-                  logger: (String) -> Unit, updateState: (State, Bitmap?) -> Unit) {
-    logger(activity.getString(R.string.toast_image_captured))
+                  message: (String?, Boolean) -> Unit,
+                  updateState: (State, Bitmap?) -> Unit) {
+    message(activity.getString(R.string.toast_image_captured), false)
 
     val newBitmap = sizeBitmap(bitmapPhoto.bitmap, -bitmapPhoto.rotationDegrees, deviceRotation)
     val imageBase64 = encodeBitmapTobase64(newBitmap)
-
     updateState(State.QUERYING, newBitmap)
-    queryImageAndStartYouTube(activity, imageBase64, forAlbum, logger, updateState)
+    try {
+        queryImageAndStartYouTube(activity, imageBase64, forAlbum, message, updateState)
+    } catch (e: Throwable) {
+        message(activity.getString(R.string.toast_error), false)
+        message(activity.getString(R.string.toast_error_fmt).format(e.message), true)
+        updateState(State.ERROR, null)
+    }
+
     newBitmap.recycle()
     bitmapPhoto.bitmap.recycle()
 }

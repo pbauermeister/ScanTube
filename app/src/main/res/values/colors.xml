@@ -13,5 +13,8 @@
     <color name="black_screen">#000000</color>
 
     <color name="shooting_text">#00ff00</color>
+    <color name="message_text">#ffffff</color>
+    <color name="message_background">#40000000</color>
+
 
 </resources>
