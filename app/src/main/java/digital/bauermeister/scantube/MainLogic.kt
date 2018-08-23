@@ -10,6 +10,8 @@ import digital.bauermeister.scantube.googlevision.GoogleVision
 import digital.bauermeister.scantube.youtube.YouTube
 import io.fotoapparat.result.BitmapPhoto
 
+var youTubeUrl: String? = null
+
 fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: Boolean,
                               message: (String?, Boolean) -> Unit, updateState: (State, Bitmap?) -> Unit) {
     message(context.getString(R.string.message_query_google), true)
@@ -40,13 +42,9 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
         // TODO: video of playlist failed: search for video with label, no playlist
 
         message(null, true)
-        val url = "https://www.youtube.com/watch?v=$videoId&list=$playlistId"
-        Log.i("MainLogic", "*** url: " + url)
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(url)
-
+        youTubeUrl = "https://www.youtube.com/watch?v=$videoId&list=$playlistId"
+        launchYouTube(context, youTubeUrl)
         updateState(State.READY, null)
-        context.startActivity(i)
     }
 
     // Video
@@ -59,14 +57,18 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
                 false)
         if (videoId == null) return
 
-        val url = "https://www.youtube.com/watch?v=$videoId"
-        Log.i("MainLogic", "*** url: " + url)
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(url)
-
+        youTubeUrl = "https://www.youtube.com/watch?v=$videoId"
+        launchYouTube(context, youTubeUrl)
         updateState(State.READY, null)
-        context.startActivity(i)
     }
+}
+
+fun launchYouTube(context: Context, url: String?) {
+    if (url == null) return
+    Log.i("MainLogic", "*** url: " + url)
+    val i = Intent(Intent.ACTION_VIEW)
+    i.data = Uri.parse(url)
+    context.startActivity(i)
 }
 
 fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,

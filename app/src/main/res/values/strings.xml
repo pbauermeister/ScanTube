@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">ScanTube</string>
 
-    <string name="button_album">Album</string>
-    <string name="button_song">Song</string>
+    <string name="button_album">Scan Album</string>
+    <string name="button_song">Scan Song</string>
+    <string name="button_replay">Replay</string>
     <string name="label_shooting">Shooting picture, please don\'t move!</string>
 
     <string name="message_query_google">Querying Google Vision...</string>

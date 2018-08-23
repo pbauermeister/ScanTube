@@ -31,6 +31,10 @@ class MainActivity : Activity() {
         // hideNavigation() // hiding the navigation would eat the next touch to reshow nav
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        if (!theConfig.showAlbumButton) main_album_button.visibility = GONE
+        if (!theConfig.showSongButton) main_song_button.visibility = GONE
+        if (!theConfig.showReplayButton) main_replay_button.visibility = GONE
+
         camera = Camera(this, main_cameraView, PERMISSION_REQUEST_CODE_CAMERA)
 
         main_album_button.setOnClickListener {
@@ -39,6 +43,10 @@ class MainActivity : Activity() {
 
         main_song_button.setOnClickListener {
             takeAndProcessPicture(false)
+        }
+
+        main_replay_button.setOnClickListener {
+            launchYouTube(this, youTubeUrl)
         }
 
         setState(State.READY)
@@ -117,6 +125,7 @@ class MainActivity : Activity() {
                 State.READY -> {
                     runBlocking { delay(theConfig.delayBeforeReadyAgain) }
                     clearMessage()
+                    main_replay_button.isEnabled = youTubeUrl != null
 
                     main_blacklayer.visibility = INVISIBLE
                     main_croppedImage.visibility = GONE

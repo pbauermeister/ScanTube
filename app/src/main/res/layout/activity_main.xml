@@ -50,26 +50,33 @@
 
                         <Button
                             android:id="@+id/main_album_button"
+                            style="@style/buttonStyle"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@color/transparent"
-                            android:text="@string/button_album"
-                            android:textColor="@color/button_font" />
-
-                        <LinearLayout
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/divider" />
+                            android:background="@color/mask_dark"
+                            android:text="@string/button_album" />
 
                         <Button
                             android:id="@+id/main_song_button"
+                            style="@style/buttonStyle"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_marginLeft="1dp"
                             android:layout_weight="1"
-                            android:background="@color/transparent"
-                            android:text="@string/button_song"
-                            android:textColor="@color/button_font" />
+                            android:background="@color/mask_dark"
+                            android:text="@string/button_song" />
+
+                        <Button
+                            android:id="@+id/main_replay_button"
+                            style="@style/buttonStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="1dp"
+                            android:layout_weight="1"
+                            android:background="@color/mask_dark"
+                            android:text="@string/button_replay" />
+
 
                     </LinearLayout>
                 </LinearLayout>
