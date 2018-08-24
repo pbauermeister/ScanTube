@@ -12,34 +12,62 @@ import io.fotoapparat.result.BitmapPhoto
 
 var youTubeUrl: String? = null
 
-fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: Boolean,
-                              message: (String?, Boolean) -> Unit, updateState: (State, Bitmap?) -> Unit) {
+fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,
+                  deviceRotation: Int,
+                  message: (String?, Boolean) -> Unit,
+                  updateState: (State, Bitmap?) -> Unit) {
+    val newBitmap = sizeBitmap(bitmapPhoto.bitmap, -bitmapPhoto.rotationDegrees, deviceRotation)
+    val imageBase64 = encodeBitmapTobase64(newBitmap)
+
+    updateState(State.QUERYING, newBitmap)
+    var errorMessage: String? = null
+    try {
+        errorMessage = queryImageAndStartYouTube(activity, imageBase64, forAlbum, message, updateState)
+    } catch (e: Throwable) {
+        message(activity.getString(R.string.message_error), false)
+        message(activity.getString(R.string.message_error_fmt).format(e.message), true)
+        updateState(State.ERROR, null)
+    }
+    if (errorMessage != null) {
+        message(errorMessage, true)
+        updateState(State.ERROR, null)
+    }
+
+    newBitmap.recycle()
+    bitmapPhoto.bitmap.recycle()
+}
+
+private fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: Boolean,
+                                      message: (String?, Boolean) -> Unit,
+                                      updateState: (State, Bitmap?) -> Unit): String? {
+    // Image recognition on Google
     message(context.getString(R.string.message_query_google), true)
     val label = GoogleVision.getAnnotateWebDetectionFirstLabel(imageBase64)
-    message(context.getString(R.string.toast_found_label_fmt).format(label), false)
+    if (label == null)
+        return context.getString(R.string.message_label_not_found)
+    else
+        message(context.getString(R.string.message_found_label_fmt).format(label), false)
     updateState(State.EVALUATING, null)
-    if (label == null) return
 
-    // Playlist
+    // Playlist search on YouTube
     if (forAlbum) {
         val searchString = theConfig.albumSearchTemplate.format(label)
         message(context.getString(R.string.message_query_youtube_pl), true)
         val playlistId = YouTube.getSearchPlaylistFirstId(searchString)
-        message(context.getString(
-                if (playlistId == null) R.string.toast_no_playlist_found
-                else R.string.toast_playlist_found),
-                false)
-        if (playlistId == null) return
+        if (playlistId == null)
+            return context.getString(R.string.message_playlist_not_found)
         // TODO: playlist failed: search for just label, w/o full album
+        else
+            message(context.getString(R.string.message_playlist_found), false)
 
         message("Querying Youtube for playlist items", true)
         message(context.getString(R.string.message_query_youtube_pl_info), true)
         val videoId = YouTube.getPlaylistItemsFirstVideoId(playlistId)
-        message(context.getString(
-                if (videoId == null) R.string.toast_first_video_not_found
-                else R.string.toast_first_video_found),
-                false)
         // TODO: video of playlist failed: search for video with label, no playlist
+        if (videoId == null)
+            return context.getString(R.string.message_video_not_found)
+        else
+            message(context.getString(R.string.message_first_video_found), false)
 
         message(null, true)
         youTubeUrl = "https://www.youtube.com/watch?v=$videoId&list=$playlistId"
@@ -47,20 +75,20 @@ fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: B
         updateState(State.READY, null)
     }
 
-    // Video
+    // Video search on YouTube
     else {
         val searchString = theConfig.videoSearchTemplate.format(label)
         val videoId = YouTube.getSearchVideoFirstId(searchString)
-        message(context.getString(
-                if (videoId == null) R.string.toast_no_video_found
-                else R.string.toast_video_found),
-                false)
-        if (videoId == null) return
+        if (videoId == null)
+            return context.getString(R.string.message_video_not_found)
+        else
+            message(context.getString(R.string.message_video_found), false)
 
         youTubeUrl = "https://www.youtube.com/watch?v=$videoId"
         launchYouTube(context, youTubeUrl)
         updateState(State.READY, null)
     }
+    return null
 }
 
 fun launchYouTube(context: Context, url: String?) {
@@ -69,25 +97,4 @@ fun launchYouTube(context: Context, url: String?) {
     val i = Intent(Intent.ACTION_VIEW)
     i.data = Uri.parse(url)
     context.startActivity(i)
-}
-
-fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,
-                  deviceRotation: Int,
-                  message: (String?, Boolean) -> Unit,
-                  updateState: (State, Bitmap?) -> Unit) {
-    message(activity.getString(R.string.toast_image_captured), false)
-
-    val newBitmap = sizeBitmap(bitmapPhoto.bitmap, -bitmapPhoto.rotationDegrees, deviceRotation)
-    val imageBase64 = encodeBitmapTobase64(newBitmap)
-    updateState(State.QUERYING, newBitmap)
-    try {
-        queryImageAndStartYouTube(activity, imageBase64, forAlbum, message, updateState)
-    } catch (e: Throwable) {
-        message(activity.getString(R.string.toast_error), false)
-        message(activity.getString(R.string.toast_error_fmt).format(e.message), true)
-        updateState(State.ERROR, null)
-    }
-
-    newBitmap.recycle()
-    bitmapPhoto.bitmap.recycle()
 }

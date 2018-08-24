@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.util.Base64
 import android.util.Log
+import io.fotoapparat.result.BitmapPhoto
 import java.io.ByteArrayOutputStream
 import kotlin.math.min
 

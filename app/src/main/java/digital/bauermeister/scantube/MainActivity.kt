@@ -65,7 +65,8 @@ class MainActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        camera?.start() // (re)start camera at resume, to account for device orientation changes
+        camera?.stop()
+        camera?.start()
     }
 
     override fun onPause() {
@@ -103,6 +104,7 @@ class MainActivity : Activity() {
 
     fun handleBitmap(bitmapPhoto: BitmapPhoto, forAlbum: Boolean) {
         val activity = this
+        message(activity.getString(R.string.message_image_captured), false)
         doAsync {
             processBitmap(activity, bitmapPhoto, forAlbum,
                     getScreenOrientation(),
@@ -120,6 +122,16 @@ class MainActivity : Activity() {
                     main_croppedImage.visibility = GONE
                     main_buttons.visibility = INVISIBLE
                     main_cameraView.visibility = VISIBLE
+                    main_youtube.visibility = INVISIBLE
+                    hideNavigation()
+                }
+                State.EVALUATING -> {
+                    // avoid reflections on CD cover: black screen, no nav
+                    main_blacklayer.visibility = INVISIBLE
+                    main_croppedImage.visibility = GONE
+                    main_buttons.visibility = INVISIBLE
+                    main_cameraView.visibility = INVISIBLE
+                    main_youtube.visibility = VISIBLE
                     hideNavigation()
                 }
                 State.READY -> {
@@ -131,6 +143,7 @@ class MainActivity : Activity() {
                     main_croppedImage.visibility = GONE
                     main_buttons.visibility = VISIBLE
                     main_cameraView.visibility = VISIBLE
+                    main_youtube.visibility = INVISIBLE
                     camera?.start()
                 }
                 State.ERROR -> {
@@ -138,6 +151,7 @@ class MainActivity : Activity() {
                     main_croppedImage.visibility = GONE
                     main_buttons.visibility = VISIBLE
                     main_cameraView.visibility = VISIBLE
+                    main_youtube.visibility = INVISIBLE
                     camera?.start()
                 }
                 else -> {
@@ -166,7 +180,7 @@ class MainActivity : Activity() {
         var capture: BitmapPhoto? = null
         async {
             capture = suspendCoroutine {
-                message(getString(R.string.toast_taking_picture), false)
+                message(getString(R.string.message_taking_picture), false)
                 camera?.takePicture({ bp -> it.resume(bp) })
             }
         }.await()

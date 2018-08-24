@@ -11,6 +11,5 @@
     <style name="buttonStyle" parent="@android:style/Widget.Button">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text_colors</item>
-        <item name="android:textSize">18sp</item>
     </style>
 </resources>

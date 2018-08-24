@@ -6,22 +6,26 @@
     <string name="button_replay">Replay</string>
     <string name="label_shooting">Shooting picture, please don\'t move!</string>
 
-    <string name="message_query_google">Querying Google Vision...</string>
-    <string name="message_query_youtube_pl">Finding YouTube playlist...</string>
-    <string name="message_query_youtube_pl_info">Querying playlist info...</string>
+    <string name="message_query_google">Querying Google Vision…</string>
+    <string name="message_query_youtube_pl">Finding YouTube playlist…</string>
+    <string name="message_query_youtube_pl_info">Querying playlist info…</string>
 
-    <string name="toast_taking_picture">Taking picture</string>
-    <string name="toast_image_captured">Image captured</string>
-    <string name="toast_error">Error</string>
-    <string name="toast_error_fmt">Error: %s</string>
+    <string name="message_label_not_found">Label not found</string>
+    <string name="message_playlist_not_found">Playlist not found</string>
+    <string name="message_video_not_found">Video not found</string>
 
-    <string name="toast_found_label_fmt">Found label: %s</string>
+    <string name="message_taking_picture">Taking picture</string>
+    <string name="message_image_captured">Image captured</string>
+    <string name="message_error">Error</string>
+    <string name="message_error_fmt">Error: %s</string>
 
-    <string name="toast_no_playlist_found">No playlist found</string>
-    <string name="toast_playlist_found">Playlist found</string>
-    <string name="toast_first_video_not_found">First video not found</string>
-    <string name="toast_first_video_found">First video found</string>
+    <string name="message_found_label_fmt">Found label: %s</string>
 
-    <string name="toast_no_video_found">No video found</string>
-    <string name="toast_video_found">Video found</string>
+    <string name="message_no_playlist_found">No playlist found</string>
+    <string name="message_playlist_found">Playlist found</string>
+    <string name="message_first_video_not_found">First video not found</string>
+    <string name="message_first_video_found">First video found</string>
+
+    <string name="message_no_video_found">No video found</string>
+    <string name="message_video_found">Video found</string>
 </resources>
