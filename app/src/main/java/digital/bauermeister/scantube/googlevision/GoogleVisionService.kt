@@ -1,19 +1,19 @@
 package digital.bauermeister.scantube.googlevision
 
-import digital.bauermeister.scantube.BuildConfig
 import digital.bauermeister.scantube.Callbacks
 import digital.bauermeister.scantube.makeWebServiceClient
+import digital.bauermeister.scantube.theConfig
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.http.Body
 import retrofit2.http.POST
-
-const val APP_KEY = BuildConfig.SCANTUBE_GOOGLEAPIS_CLOUDVISION_APPKEY;
+import retrofit2.http.Query
 
 interface GoogleVisionService {
-    @POST("https://vision.googleapis.com/v1/images:annotate?key=" + APP_KEY)
-    fun annotateWebDetection(@Body body: GoogleVisionRequest.Data)
+    @POST("https://vision.googleapis.com/v1/images:annotate")
+    fun annotateWebDetection(@Body body: GoogleVisionRequest.Data,
+                             @Query("key") key: String = theConfig.googleVisionAppKey)
             : Observable<GoogleVisionWebDetectionResponse.Data>
 
     companion object {

@@ -1,6 +1,5 @@
 package digital.bauermeister.scantube
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,9 +9,7 @@ import digital.bauermeister.scantube.googlevision.GoogleVision
 import digital.bauermeister.scantube.youtube.YouTube
 import io.fotoapparat.result.BitmapPhoto
 
-var youTubeUrl: String? = null
-
-fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,
+fun processBitmap(activity: MainActivity, bitmapPhoto: BitmapPhoto, forAlbum: Boolean,
                   deviceRotation: Int,
                   message: (String?, Boolean) -> Unit,
                   updateState: (State, Bitmap?) -> Unit) {
@@ -37,7 +34,7 @@ fun processBitmap(activity: Activity, bitmapPhoto: BitmapPhoto, forAlbum: Boolea
     bitmapPhoto.bitmap.recycle()
 }
 
-private fun queryImageAndStartYouTube(context: Context, imageBase64: String, forAlbum: Boolean,
+private fun queryImageAndStartYouTube(activity: MainActivity, imageBase64: String, forAlbum: Boolean,
                                       message: (String?, Boolean) -> Unit,
                                       updateState: (State, Bitmap?) -> Unit): String? {
     // Image recognition on Google
@@ -70,8 +67,9 @@ private fun queryImageAndStartYouTube(context: Context, imageBase64: String, for
             message(context.getString(R.string.message_first_video_found), false)
 
         message(null, true)
-        youTubeUrl = "https://www.youtube.com/watch?v=$videoId&list=$playlistId"
-        launchYouTube(context, youTubeUrl)
+        val youTubeUrl = "https://www.youtube.com/watch?v=$videoId&list=$playlistId"
+        activity.onYouTubeLaunched(youTubeUrl, label)
+        launchYouTube(activity, youTubeUrl)
         updateState(State.READY, null)
     }
 
@@ -84,8 +82,9 @@ private fun queryImageAndStartYouTube(context: Context, imageBase64: String, for
         else
             message(context.getString(R.string.message_video_found), false)
 
-        youTubeUrl = "https://www.youtube.com/watch?v=$videoId"
+        val youTubeUrl = "https://www.youtube.com/watch?v=$videoId"
         launchYouTube(context, youTubeUrl)
+        activity.onYouTubeLaunched(youTubeUrl, label)
         updateState(State.READY, null)
     }
     return null

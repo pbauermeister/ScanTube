@@ -8,7 +8,8 @@
     <color name="mask_dark">#a0000000</color>
     <color name="transparent">#00000000</color>
     <color name="divider">#80ffffff</color>
-    <!--<color name="button_font">#ffffff</color>-->
+
+    <color name="preferences_icon">#ddd</color>
 
     <color name="black_screen">#000000</color>
 

@@ -4,13 +4,12 @@ import android.util.Log
 import digital.bauermeister.scantube.BuildConfig
 import digital.bauermeister.scantube.Callbacks
 import digital.bauermeister.scantube.makeWebServiceClient
+import digital.bauermeister.scantube.theConfig
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import retrofit2.http.GET
 import retrofit2.http.Query
-
-const val APP_KEY = BuildConfig.SCANTUBE_GOOGLEAPIS_YOUTUBE_APPKEY;
 
 interface YouTubeService {
     @GET("search")
@@ -18,7 +17,7 @@ interface YouTubeService {
             @Query("q") q: String,
             @Query("type") type: String = "playlist",
             @Query("part") part: String = "id",
-            @Query("key") key: String = APP_KEY)
+            @Query("key") key: String = theConfig.youTubeAppKey)
             : Observable<YouTubeSearchPlaylistResponse.Data>
 
     @GET("search")
@@ -26,14 +25,14 @@ interface YouTubeService {
             @Query("q") q: String,
             @Query("type") type: String = "video",
             @Query("part") part: String = "id",
-            @Query("key") key: String = APP_KEY)
+            @Query("key") key: String = theConfig.youTubeAppKey)
             : Observable<YouTubeVideoItemsResponse.Data>
 
     @GET("playlistItems")
     fun getPlaylistItems(
             @Query("playlistId") playlistId: String,
             @Query("part") part: String = "contentDetails",
-            @Query("key") key: String = APP_KEY)
+            @Query("key") key: String = theConfig.youTubeAppKey)
             : Observable<YouTubePlaylistItemsResponse.Data>
 
     companion object {

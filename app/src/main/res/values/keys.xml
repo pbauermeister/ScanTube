@@ -1,0 +1,24 @@
+<resources>
+
+    <!-- DO NOT TRANSLATE THIS RESSOURCE! -->
+
+    <string-array name="keys_pref_buttons">
+        <item>1</item> <!-- bit 0 -->
+        <item>2</item> <!-- bit 1 -->
+        <item>3</item> <!-- bitwise sum of all above -->
+    </string-array>
+
+    <string name="key_pref_buttons">buttons_which_list</string>
+    <string name="key_pref_autostart">auto_start</string>
+
+    <string name="key_pref_googlevision_appkey">google_vision_appkey</string>
+    <string name="key_pref_youtube_appkey">youtube_appkey</string>
+
+    <string-array name="keys_pref_camera">
+        <item>front</item>
+        <item>back</item>
+    </string-array>
+
+    <string name="key_pref_camera">camera_which_list</string>
+
+</resources>

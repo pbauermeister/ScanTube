@@ -2,8 +2,10 @@ package digital.bauermeister.scantube
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.Surface
 import android.view.View
@@ -23,6 +25,8 @@ const val PERMISSION_REQUEST_CODE_CAMERA = 1
 
 class MainActivity : Activity() {
     var camera: Camera? = null
+    var buttons = getPrefButtons()
+    var youTubeUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +40,11 @@ class MainActivity : Activity() {
         if (!theConfig.showReplayButton) main_replay_button.visibility = GONE
 
         camera = Camera(this, main_cameraView, PERMISSION_REQUEST_CODE_CAMERA)
+
+        main_settings.setOnClickListener {
+            val i = Intent(this, SettingsActivity::class.java)
+            startActivity(i)
+        }
 
         main_album_button.setOnClickListener {
             takeAndProcessPicture(true)
@@ -65,8 +74,16 @@ class MainActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        camera?.stop()
-        camera?.start()
+
+        val buttonsNow = getPrefButtons()
+        if (buttons != buttonsNow) {
+            // pref changed
+            buttons = buttonsNow
+            this.recreate()
+        } else {
+            camera?.stop()
+            camera?.start()
+        }
     }
 
     override fun onPause() {
@@ -198,5 +215,16 @@ class MainActivity : Activity() {
             Surface.ROTATION_180 -> 180
             else -> 270
         }
+    }
+
+    fun onYouTubeLaunched(youTubeUrl: String, label: String) {
+        this.youTubeUrl = youTubeUrl
+        val mainText = getText(R.string.button_replay)
+        val smallText = Html.escapeHtml(label)
+        runOnUiThread {
+            main_replay_button.setText(Html.fromHtml(
+                    "$mainText<br/><small>$smallText</small>"))
+        }
+
     }
 }

@@ -18,13 +18,13 @@ import io.fotoapparat.selector.highestResolution
 import io.fotoapparat.selector.lowestResolution
 import io.fotoapparat.view.CameraRenderer
 
-val lensPosition = when (theConfig.whichCamera) {
+fun getLensPosition() = when (theConfig.whichCamera) {
     WhichCamera.FRONT -> front()
     WhichCamera.BACK -> back()
     else -> front()
 }
 
-val cameraConfiguration = when (theConfig.cameraResolution) {
+fun getCameraConfiguration() = when (theConfig.cameraResolution) {
     CameraResolution.MAXIMUM -> CameraConfiguration(pictureResolution = highestResolution())
     CameraResolution.MINIMUM -> CameraConfiguration(pictureResolution = lowestResolution())
     else -> CameraConfiguration()
@@ -33,20 +33,9 @@ val cameraConfiguration = when (theConfig.cameraResolution) {
 class Camera(val activity: Activity,
              val cameraView: CameraRenderer,
              val permissionRequest: Int) {
-    val fotoapparat = Fotoapparat(
-            context = activity,
-            view = cameraView,
-            scaleType = ScaleType.CenterCrop,
-            lensPosition = lensPosition,
-            cameraConfiguration = cameraConfiguration,
-            logger = loggers(logcat()),
-            cameraErrorCallback = { error ->
-                Log.e(this.javaClass.name, "Camera error: " + error)
-            }
-    )
 
     fun stop() {
-        fotoapparat.stop()
+        stopFotoapparat()
     }
 
     fun start() {
@@ -68,17 +57,20 @@ class Camera(val activity: Activity,
         } else {
             // Permission has already been granted
             Log.d(this.javaClass.name, "CAMERA: perm already granted")
-            fotoapparat.start()
+            startFotoapparat()
         }
     }
 
     fun takePicture(callback: (BitmapPhoto?) -> Unit) {
-        val photoResult = fotoapparat.takePicture()
-
-        // Asynchronously converts photo to bitmap and returns the result on the main thread
-        photoResult
-                .toBitmap()
-                .whenAvailable { callback(it) }
+        if (fotoapparat == null) {
+            callback(null)
+        } else {
+            val photoResult = fotoapparat!!.takePicture()
+            // Asynchronously converts photo to bitmap and returns the result
+            photoResult
+                    .toBitmap()
+                    .whenAvailable { callback(it) }
+        }
     }
 
     fun onRequestPermissionsResult(requestCode: Int,
@@ -91,7 +83,7 @@ class Camera(val activity: Activity,
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     Log.d(this.javaClass.name, "CAMERA: perm newly granted")
-                    fotoapparat.start()
+                    startFotoapparat()
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -101,5 +93,28 @@ class Camera(val activity: Activity,
                 return
             }
         }
+    }
+
+    private var fotoapparat: Fotoapparat? = null
+
+    private fun startFotoapparat() {
+        stopFotoapparat()
+        fotoapparat = Fotoapparat(
+                context = activity,
+                view = cameraView,
+                scaleType = ScaleType.CenterCrop,
+                lensPosition = getLensPosition(),
+                cameraConfiguration = getCameraConfiguration(),
+                logger = loggers(logcat()),
+                cameraErrorCallback = { error ->
+                    Log.e(this.javaClass.name, "Camera error: " + error)
+                }
+        )
+        fotoapparat!!.start()
+    }
+
+    private fun stopFotoapparat() {
+        fotoapparat?.stop()
+        fotoapparat = null
     }
 }

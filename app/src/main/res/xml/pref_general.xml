@@ -1,0 +1,30 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="3"
+        android:entries="@array/pref_buttons_titles"
+        android:entryValues="@array/keys_pref_buttons"
+        android:key="@string/key_pref_buttons"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_buttons_title" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/key_pref_autostart"
+        android:summary="@string/pref_autostart_description"
+        android:title="@string/pref_autostart_title" />
+
+    <EditTextPreference
+        android:key="@string/key_pref_googlevision_appkey"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:title="@string/pref_googlevision_appkey_title" />
+
+    <EditTextPreference
+        android:key="@string/key_pref_youtube_appkey"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:title="@string/pref_youtube_appkey_title" />
+
+</PreferenceScreen>
