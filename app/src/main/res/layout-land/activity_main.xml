@@ -35,10 +35,10 @@
 
                     <ImageView
                         android:id="@+id/main_settings"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_margin="18dp"
-                        android:src="@android:drawable/ic_menu_preferences"
+                        android:src="@drawable/ic_action_settings"
                         android:tint="@color/preferences_icon" />
                 </LinearLayout>
 
