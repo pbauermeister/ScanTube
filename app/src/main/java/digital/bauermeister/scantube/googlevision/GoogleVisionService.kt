@@ -13,7 +13,7 @@ import retrofit2.http.Query
 interface GoogleVisionService {
     @POST("https://vision.googleapis.com/v1/images:annotate")
     fun annotateWebDetection(@Body body: GoogleVisionRequest.Data,
-                             @Query("key") key: String = theConfig.googleVisionAppKey)
+                             @Query("key") key: String = theConfig.googleVisionAppKey!!)
             : Observable<GoogleVisionWebDetectionResponse.Data>
 
     companion object {

@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:key="@string/key_pref_googlevision_appkey"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:title="@string/pref_googlevision_appkey_title" />
+
+    <EditTextPreference
+        android:key="@string/key_pref_youtube_appkey"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:title="@string/pref_youtube_appkey_title" />
+
+</PreferenceScreen>

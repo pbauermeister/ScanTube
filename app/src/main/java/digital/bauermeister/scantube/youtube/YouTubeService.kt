@@ -17,7 +17,7 @@ interface YouTubeService {
             @Query("q") q: String,
             @Query("type") type: String = "playlist",
             @Query("part") part: String = "id",
-            @Query("key") key: String = theConfig.youTubeAppKey)
+            @Query("key") key: String = theConfig.youTubeAppKey!!)
             : Observable<YouTubeSearchPlaylistResponse.Data>
 
     @GET("search")
@@ -25,14 +25,14 @@ interface YouTubeService {
             @Query("q") q: String,
             @Query("type") type: String = "video",
             @Query("part") part: String = "id",
-            @Query("key") key: String = theConfig.youTubeAppKey)
+            @Query("key") key: String = theConfig.youTubeAppKey!!)
             : Observable<YouTubeVideoItemsResponse.Data>
 
     @GET("playlistItems")
     fun getPlaylistItems(
             @Query("playlistId") playlistId: String,
             @Query("part") part: String = "contentDetails",
-            @Query("key") key: String = theConfig.youTubeAppKey)
+            @Query("key") key: String = theConfig.youTubeAppKey!!)
             : Observable<YouTubePlaylistItemsResponse.Data>
 
     companion object {

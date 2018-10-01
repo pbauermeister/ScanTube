@@ -1,11 +1,15 @@
 package digital.bauermeister.scantube
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.preference.PreferenceActivity
 import android.text.Html
+import android.text.SpannableString
+import android.text.util.Linkify
 import android.util.Log
 import android.view.Surface
 import android.view.View
@@ -19,6 +23,10 @@ import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.runBlocking
 import org.jetbrains.anko.doAsync
 import kotlin.coroutines.experimental.suspendCoroutine
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
+
+
 
 
 const val PERMISSION_REQUEST_CODE_CAMERA = 1
@@ -47,27 +55,40 @@ class MainActivity : Activity() {
         }
 
         main_album_button.setOnClickListener {
-            takeAndProcessPicture(true)
+            if (checkGoogleKeys())
+                takeAndProcessPicture(true)
         }
 
         main_song_button.setOnClickListener {
-            takeAndProcessPicture(false)
+            if (checkGoogleKeys())
+                takeAndProcessPicture(false)
         }
 
         main_replay_button.setOnClickListener {
-            launchYouTube(this, youTubeUrl)
+            if (checkGoogleKeys())
+                launchYouTube(this, youTubeUrl)
         }
 
         setState(State.READY)
+
+        checkGoogleKeys()
     }
 
-    fun hideNavigation() {
+    private fun checkGoogleKeys(): Boolean {
+        val ok = theConfig.googleVisionAppKey != null && theConfig.youTubeAppKey != null
+        if (!ok) {
+            showKeysMissingDialog()
+        }
+        return ok
+    }
+
+    private fun hideNavigation() {
         val decorView = window.decorView
         val uiOptions = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN)
         decorView.systemUiVisibility = uiOptions
     }
 
-    fun hideStatusBar() {
+    private fun hideStatusBar() {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
@@ -110,7 +131,7 @@ class MainActivity : Activity() {
         }
     }
 
-    fun clearMessage() {
+    private fun clearMessage() {
         main_message.visibility = View.GONE
     }
 
@@ -119,7 +140,7 @@ class MainActivity : Activity() {
         camera?.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    fun handleBitmap(bitmapPhoto: BitmapPhoto, forAlbum: Boolean) {
+    private fun handleBitmap(bitmapPhoto: BitmapPhoto, forAlbum: Boolean) {
         val activity = this
         message(activity.getString(R.string.message_image_captured), false)
         doAsync {
@@ -130,7 +151,7 @@ class MainActivity : Activity() {
         }
     }
 
-    fun setState(state: State, bitmap: Bitmap? = null) {
+    private fun setState(state: State, bitmap: Bitmap? = null) {
         runOnUiThread {
             when (state) {
                 State.SHOOTING -> {
@@ -183,7 +204,7 @@ class MainActivity : Activity() {
         }
     }
 
-    fun takeAndProcessPicture(forAlbum: Boolean) = async {
+    private fun takeAndProcessPicture(forAlbum: Boolean) = async {
         setState(State.SHOOTING)
 
         if (theConfig.resetCameraBeforeShooting) {
@@ -207,7 +228,7 @@ class MainActivity : Activity() {
             handleBitmap(bitmapPhoto, forAlbum)
     }
 
-    fun getScreenOrientation(): Int {
+    private fun getScreenOrientation(): Int {
         val screenOrientation = (this.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.orientation
         return when (screenOrientation) {
             Surface.ROTATION_0 -> 0
@@ -226,5 +247,38 @@ class MainActivity : Activity() {
                     "$mainText<br/><small>$smallText</small>"))
         }
 
+    }
+
+    private fun showKeysMissingDialog() {
+        val builder = AlertDialog.Builder(this)
+
+        // Set the alert dialog title
+        builder.setTitle(R.string.dialog_keys_title)
+
+        // Display a message on alert dialog
+        val msg = getText(R.string.dialog_keys_message)
+        val ss = SpannableString(msg);
+        Linkify.addLinks(ss, Linkify.ALL);
+        builder.setMessage(ss)
+
+        // Set a positive button and its click listener on alert dialog
+        builder.setPositiveButton(R.string.dialog_button_positive_button) { dialog, which ->
+            val intent = Intent(this, SettingsActivity::class.java)
+            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.AppKeysPreferenceFragment::class.java.name);
+            intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+            startActivity(intent)
+        }
+
+        // Display a negative button on alert dialog
+        builder.setNegativeButton(android.R.string.cancel) { dialog, which -> }
+
+        // Finally, make the alert dialog using builder
+        val dialog: AlertDialog = builder.create()
+
+        // Display the alert dialog on app interface
+        dialog.show()
+
+        // Make the textview clickable. Must be called after show()
+        (dialog.findViewById(android.R.id.message) as TextView).movementMethod = LinkMovementMethod.getInstance()
     }
 }

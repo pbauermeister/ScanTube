@@ -67,7 +67,7 @@ class SettingsActivity : PreferenceActivity() {
     override fun isValidFragment(fragmentName: String): Boolean {
         return PreferenceFragment::class.java.name == fragmentName
                 || GeneralPreferenceFragment::class.java.name == fragmentName
-                || CameraPreferenceFragment::class.java.name == fragmentName
+                || AppKeysPreferenceFragment::class.java.name == fragmentName
     }
 
     /**
@@ -82,8 +82,7 @@ class SettingsActivity : PreferenceActivity() {
             setHasOptionsMenu(true)
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.key_pref_buttons)))
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.key_pref_googlevision_appkey)))
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.key_pref_youtube_appkey)))
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.key_pref_camera)))
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -101,13 +100,12 @@ class SettingsActivity : PreferenceActivity() {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    class CameraPreferenceFragment : PreferenceFragment() {
+    class AppKeysPreferenceFragment : PreferenceFragment() {
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.pref_camera)
+            addPreferencesFromResource(R.xml.pref_appkeys)
             setHasOptionsMenu(true)
 
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.key_pref_camera)))
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {

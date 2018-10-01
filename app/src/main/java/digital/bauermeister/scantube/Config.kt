@@ -45,8 +45,8 @@ class Config {
 
     // APP KEYS
     // ========
-    val googleVisionAppKey: String get() = getPrefGoogleVisionAppkey()!!
-    val youTubeAppKey: String get() = getPrefYouTubeAppKey()!!
+    val googleVisionAppKey: String? get() = getPrefGoogleVisionAppkey()
+    val youTubeAppKey: String? get() = getPrefYouTubeAppKey()
 }
 
 val prefs = PreferenceManager.getDefaultSharedPreferences(getAppContext())

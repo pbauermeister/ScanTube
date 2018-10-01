@@ -8,7 +8,7 @@
         android:title="@string/pref_general_header" />
 
     <header
-        android:fragment="digital.bauermeister.scantube.SettingsActivity$CameraPreferenceFragment"
+        android:fragment="digital.bauermeister.scantube.SettingsActivity$AppKeysPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_camera_header" />
+        android:title="@string/pref_appkeys_header" />
 </preference-headers>

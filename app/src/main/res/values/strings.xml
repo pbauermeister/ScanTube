@@ -47,6 +47,15 @@
     <string name="pref_autostart_description">Automatically start app when device starts
     </string>
 
+    <string name="pref_camera_title">Which camera to use</string>
+    <string-array name="pref_camera_titles">
+        <item>Front (selfie) camera</item>
+        <item>Back camera</item>
+    </string-array>
+
+    <!-- App Keys settings -->
+    <string name="pref_appkeys_header">App Keys</string>
+
     <string name="pref_googlevision_appkey_title">Google Vision Appkey</string>
     <string name="pref_googlevision_appkey_summary">Key: %s</string>
     <string name="pref_googlevision_appkey_hint">You need an app key for Google Cloud Vision.\n[How to get one]</string>
@@ -55,12 +64,12 @@
     <string name="pref_youtube_appkey_summary">Key: %s</string>
     <string name="pref_youtube_appkey_hint">You need an app key for YouTube.\n[how to get one]</string>
 
-    <!-- Camera settings -->
-    <string name="pref_camera_header">Camera</string>
+    <!-- Dialogs -->
+    <string name="dialog_keys_title">Google App Keys</string>
+    <string name="dialog_keys_message">To recognize album covers and start YouTube, you need to set your own app keys.\n
+        \nTo obtain keys, please visit https://console.developers.google.com/apis/library.
+        \nYou need Cloud Vision API and YouTube Data API.
+    </string>
+    <string name="dialog_button_positive_button">Set keys</string>
 
-    <string name="pref_camera_title">Which camera to use</string>
-    <string-array name="pref_camera_titles">
-        <item>Front (selfie) camera</item>
-        <item>Back camera</item>
-    </string-array>
 </resources>
