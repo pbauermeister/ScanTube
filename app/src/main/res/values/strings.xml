@@ -34,7 +34,7 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- General settings -->
-    <string name="pref_general_header">General</string>
+    <string name="pref_general_header">General settings</string>
 
     <string name="pref_buttons_title">Which scan buttons are shown on the main screen</string>
     <string-array name="pref_buttons_titles">
@@ -54,7 +54,7 @@
     </string-array>
 
     <!-- App Keys settings -->
-    <string name="pref_appkeys_header">App Keys</string>
+    <string name="pref_appkeys_header">App keys Settings</string>
 
     <string name="pref_googlevision_appkey_title">Google Vision Appkey</string>
     <string name="pref_googlevision_appkey_summary">Key: %s</string>
