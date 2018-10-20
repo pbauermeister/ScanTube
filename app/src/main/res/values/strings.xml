@@ -54,18 +54,18 @@
     </string-array>
 
     <!-- App Keys settings -->
-    <string name="pref_appkeys_header">App keys Settings</string>
+    <string name="pref_appkeys_header">App keys settings</string>
 
-    <string name="pref_googlevision_appkey_title">Google Vision Appkey</string>
+    <string name="pref_googlevision_appkey_title">Google Vision app key</string>
     <string name="pref_googlevision_appkey_summary">Key: %s</string>
-    <string name="pref_googlevision_appkey_hint">You need an app key for Google Cloud Vision.\n[How to get one]</string>
+    <string name="pref_googlevision_appkey_hint">You need an app key for Google Cloud Vision.\n[TODO: How to get one]</string>
 
-    <string name="pref_youtube_appkey_title">YouTube Appkey</string>
+    <string name="pref_youtube_appkey_title">YouTube app key</string>
     <string name="pref_youtube_appkey_summary">Key: %s</string>
-    <string name="pref_youtube_appkey_hint">You need an app key for YouTube.\n[how to get one]</string>
+    <string name="pref_youtube_appkey_hint">You need an app key for YouTube.\n[TODO: how to get one]</string>
 
     <!-- Dialogs -->
-    <string name="dialog_keys_title">Google App Keys</string>
+    <string name="dialog_keys_title">Google app keys</string>
     <string name="dialog_keys_message">To recognize album covers and start YouTube, you need to set your own app keys.\n
         \nTo obtain keys, please visit https://console.developers.google.com/apis/library.
         \nYou need Cloud Vision API and YouTube Data API.
