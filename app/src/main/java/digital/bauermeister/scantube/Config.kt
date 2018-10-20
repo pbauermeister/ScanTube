@@ -1,7 +1,6 @@
 package digital.bauermeister.scantube
 
 import android.preference.PreferenceManager
-import android.util.Log
 
 enum class CameraResolution { MINIMUM, MAXIMUM, DEFAULT }
 enum class WhichCamera { FRONT, BACK, DEFAULT }
@@ -30,8 +29,6 @@ class Config {
 
     // Camera
     val whichCamera: WhichCamera get() = if (getPrefCamera() == "front") WhichCamera.FRONT else WhichCamera.BACK
-    val resetCameraBeforeShooting: Boolean get() = false
-    val delayBeforeShooting: Int get() = 0
 
     // BW friendly, with still enough resolution for recognition
     val maxPhotoResolution: Int get() = 800

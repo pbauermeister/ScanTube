@@ -6,9 +6,14 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.preference.*
+import android.preference.ListPreference
+import android.preference.Preference
+import android.preference.PreferenceActivity
+import android.preference.PreferenceFragment
+import android.preference.PreferenceManager
 import android.support.v4.app.NavUtils
 import android.view.MenuItem
+
 
 /**
  * A [PreferenceActivity] that presents a set of application settings. On

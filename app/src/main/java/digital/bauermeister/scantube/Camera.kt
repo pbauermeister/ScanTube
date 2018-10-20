@@ -34,6 +34,11 @@ class Camera(val activity: Activity,
              val cameraView: CameraRenderer,
              val permissionRequest: Int) {
 
+    fun restart() {
+        stop()
+        start()
+    }
+
     fun stop() {
         stopFotoapparat()
     }
@@ -99,6 +104,7 @@ class Camera(val activity: Activity,
 
     private fun startFotoapparat() {
         stopFotoapparat()
+        Thread.sleep(100)
         fotoapparat = Fotoapparat(
                 context = activity,
                 view = cameraView,
@@ -111,6 +117,7 @@ class Camera(val activity: Activity,
                 }
         )
         fotoapparat!!.start()
+        Thread.sleep(100)
     }
 
     private fun stopFotoapparat() {

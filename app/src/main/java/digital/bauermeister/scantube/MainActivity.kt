@@ -102,8 +102,7 @@ class MainActivity : Activity() {
             buttons = buttonsNow
             this.recreate()
         } else {
-            camera?.stop()
-            camera?.start()
+            camera?.restart()
         }
     }
 
@@ -206,14 +205,6 @@ class MainActivity : Activity() {
 
     private fun takeAndProcessPicture(forAlbum: Boolean) = async {
         setState(State.SHOOTING)
-
-        if (theConfig.resetCameraBeforeShooting) {
-            camera?.stop()
-            camera?.start()
-        }
-
-        if (theConfig.delayBeforeShooting > 0)
-            runBlocking { delay(theConfig.delayBeforeShooting) }
 
         var capture: BitmapPhoto? = null
         async {
