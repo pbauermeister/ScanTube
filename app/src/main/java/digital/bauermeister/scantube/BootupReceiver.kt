@@ -6,9 +6,9 @@ import android.content.Intent
 
 class BootUpReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (getPrefAutoStart()) {
+        if (Config().startAtBoot) {
             val intent = Intent(context, MainActivity::class.java)
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
     }

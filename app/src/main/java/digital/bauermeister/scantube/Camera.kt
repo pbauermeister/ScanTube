@@ -30,9 +30,9 @@ fun getCameraConfiguration() = when (theConfig.cameraResolution) {
     else -> CameraConfiguration()
 }
 
-class Camera(val activity: Activity,
-             val cameraView: CameraRenderer,
-             val permissionRequest: Int) {
+class Camera(private val activity: Activity,
+             private val cameraView: CameraRenderer,
+             private val permissionRequest: Int) {
 
     fun restart() {
         stop()

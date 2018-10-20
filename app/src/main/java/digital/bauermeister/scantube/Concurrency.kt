@@ -14,7 +14,7 @@ class Signal {
 
 class Callbacks<T> {
     var success: T? = null
-    var error: Throwable? = null
+    private var error: Throwable? = null
     private val signal = Signal()
 
     val onSuccess = { result: T ->

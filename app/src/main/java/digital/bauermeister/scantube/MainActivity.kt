@@ -32,9 +32,9 @@ import android.widget.TextView
 const val PERMISSION_REQUEST_CODE_CAMERA = 1
 
 class MainActivity : Activity() {
-    var camera: Camera? = null
-    var buttons = getPrefButtons()
-    var youTubeUrl: String? = null
+    private var camera: Camera? = null
+    private var buttons = getPrefButtons()
+    private var youTubeUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -234,8 +234,8 @@ class MainActivity : Activity() {
         val mainText = getText(R.string.button_replay)
         val smallText = Html.escapeHtml(label)
         runOnUiThread {
-            main_replay_button.setText(Html.fromHtml(
-                    "$mainText<br/><small>$smallText</small>"))
+            main_replay_button.text = Html.fromHtml(
+                    "$mainText<br/><small>$smallText</small>")
         }
 
     }
@@ -248,15 +248,15 @@ class MainActivity : Activity() {
 
         // Display a message on alert dialog
         val msg = getText(R.string.dialog_keys_message)
-        val ss = SpannableString(msg);
-        Linkify.addLinks(ss, Linkify.ALL);
+        val ss = SpannableString(msg)
+        Linkify.addLinks(ss, Linkify.ALL)
         builder.setMessage(ss)
 
         // Set a positive button and its click listener on alert dialog
         builder.setPositiveButton(R.string.dialog_button_positive_button) { dialog, which ->
             val intent = Intent(this, SettingsActivity::class.java)
-            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.AppKeysPreferenceFragment::class.java.name);
-            intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true);
+            intent.putExtra(PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.AppKeysPreferenceFragment::class.java.name)
+            intent.putExtra(PreferenceActivity.EXTRA_NO_HEADERS, true)
             startActivity(intent)
         }
 

@@ -1,7 +1,5 @@
 package digital.bauermeister.scantube.youtube
 
-import android.util.Log
-import digital.bauermeister.scantube.BuildConfig
 import digital.bauermeister.scantube.Callbacks
 import digital.bauermeister.scantube.makeWebServiceClient
 import digital.bauermeister.scantube.theConfig
@@ -51,9 +49,9 @@ object YouTube {
     /**
      * Asynchronously search for playlist
      */
-    fun searchPlayList(q: String,
-                       onSuccess: (YouTubeSearchPlaylistResponse.Data) -> Unit,
-                       onError: (Throwable) -> Unit) {
+    private fun searchPlayList(q: String,
+                               onSuccess: (YouTubeSearchPlaylistResponse.Data) -> Unit,
+                               onError: (Throwable) -> Unit) {
         youTubeServe.searchPlaylist(q)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -73,9 +71,9 @@ object YouTube {
     /**
      * Asynchronously get videos of a playlist
      */
-    fun getPlaylistItems(playlistId: String,
-                         onSuccess: (YouTubePlaylistItemsResponse.Data) -> Unit,
-                         onError: (Throwable) -> Unit) {
+    private fun getPlaylistItems(playlistId: String,
+                                 onSuccess: (YouTubePlaylistItemsResponse.Data) -> Unit,
+                                 onError: (Throwable) -> Unit) {
         youTubeServe.getPlaylistItems(playlistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -95,9 +93,9 @@ object YouTube {
     /**
      * Asynchronously search for video
      */
-    fun searchVideo(q: String,
-                    onSuccess: (YouTubeVideoItemsResponse.Data) -> Unit,
-                    onError: (Throwable) -> Unit) {
+    private fun searchVideo(q: String,
+                            onSuccess: (YouTubeVideoItemsResponse.Data) -> Unit,
+                            onError: (Throwable) -> Unit) {
         youTubeServe.searchVideo(q)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

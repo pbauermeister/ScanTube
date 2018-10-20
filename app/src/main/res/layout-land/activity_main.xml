@@ -115,7 +115,7 @@
                     android:gravity="center"
                     android:text="@string/label_shooting"
                     android:textColor="@color/shooting_text"
-                    android:textSize="32dp" />
+                    android:textSize="32sp" />
             </digital.bauermeister.scantube.SquareView>
         </LinearLayout>
 
@@ -166,7 +166,7 @@
                     android:background="@color/message_background"
                     android:gravity="center"
                     android:textColor="@color/message_text"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </digital.bauermeister.scantube.SquareView>
         </LinearLayout>
 

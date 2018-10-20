@@ -32,7 +32,7 @@ object GoogleVision {
     /**
      * Asynchronously get annotations of an image
      */
-    fun annotateWebDetection(imageBase64: String,
+    private fun annotateWebDetection(imageBase64: String,
                              onSuccess: (GoogleVisionWebDetectionResponse.Data) -> Unit,
                              onError: (Throwable) -> Unit) {
         googleVisionServe.annotateWebDetection(makeGoogleVisionWebDetectionRequest(imageBase64))

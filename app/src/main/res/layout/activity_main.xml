@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:gravity="top|right"
+                    android:gravity="top|end"
                     android:background="@color/mask_dark">
 
                     <ImageView
@@ -72,7 +72,7 @@
                             style="@style/buttonStyle"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="1dp"
+                            android:layout_marginStart="1dp"
                             android:layout_weight="1"
                             android:background="@color/mask_dark"
                             android:text="@string/button_song" />
@@ -82,7 +82,7 @@
                             style="@style/buttonStyle"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="1dp"
+                            android:layout_marginStart="1dp"
                             android:layout_weight="1"
                             android:background="@color/mask_dark"
                             android:text="@string/button_replay" />
@@ -116,7 +116,7 @@
                     android:gravity="center"
                     android:text="@string/label_shooting"
                     android:textColor="@color/shooting_text"
-                    android:textSize="32dp" />
+                    android:textSize="32sp" />
             </digital.bauermeister.scantube.SquareView>
         </LinearLayout>
 
@@ -167,7 +167,7 @@
                     android:background="@color/message_background"
                     android:gravity="center"
                     android:textColor="@color/message_text"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </digital.bauermeister.scantube.SquareView>
         </LinearLayout>
 
