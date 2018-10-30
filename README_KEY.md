@@ -1,6 +1,6 @@
 # Handling Keys
 
-Several API keys are needed for this project. If you want to build it, you have to provide your own keys. They are stored outside the git repository in order to stay protected. Compromised keys could mean unwanted API calls can be made at your costs.
+Several API keys are needed for this project. The keys must be protected. Compromised keys could mean unwanted API calls can be made at your costs.
 
 ## A. Google API key for access to YouTube
 
