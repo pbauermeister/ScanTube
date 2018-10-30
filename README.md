@@ -1,5 +1,8 @@
 # ScanTube
 
+![Boombox image](https://cdn.instructables.com/FVZ/YI59/JNSR6ZG3/FVZYI59JNSR6ZG3.MEDIUM.jpg)
+
+
 ## What is ScanTube?
 
 ScanTube is an Android App, written in Kotlin (*).
@@ -12,6 +15,8 @@ This poject has the following features:
 
 The objective is to embed a smartphone into a vintage boombox, to
 retrofit it as a YouTube player.
+
+For details, see https://www.instructables.com/id/Play-CDs-Without-CD-Player-Using-AI-and-YouTube/.
 
 ## Motivation
 
